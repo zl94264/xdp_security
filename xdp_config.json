@@ -1,0 +1,111 @@
+{
+    "interface": {
+        "in_if": "enp4s0",
+        "out_if": "enp3s0",
+        "in_index": 4,
+        "out_index": 3
+    },
+    "network": {
+        "arp_net": [192, 168, 11],
+        "heartbeat_port": 8888
+    },
+    "heartbeat": {
+        "port": 8888,
+        "interval_ms": 500,
+        "timeout_ms": 2000,
+        "max_miss": 1,
+        "peer_ip": "192.168.11.1"
+    },
+    "encryption": {
+        "sp_header": {
+            "algo": 4,
+            "mode": 4,
+            "key_bits": 2,
+            "key": [
+                18, 52, 86, 120, 154, 188, 222, 240,
+                18, 52, 86, 120, 154, 188, 222, 240
+            ],
+            "iv": [
+                240, 222, 188, 154, 120, 86, 52, 18,
+                240, 222, 188, 154, 120, 86, 52, 18
+            ]
+        },
+        "payload": {
+            "suite_id": 1,
+            "active_identifier": 21328,
+            "key_domains": [
+                {
+                    "identifier": 21328,
+                    "rotation_span": 1024,
+                    "master_key": [
+                        17, 34, 51, 68, 85, 102, 119, 136,
+                        153, 170, 187, 204, 221, 238, 255, 0
+                    ]
+                }
+            ]
+        }
+    },
+    "flow_cache": {
+        "capacity": 4096,
+        "udp_idle_timeout_ms": 60000,
+        "tcp_idle_timeout_ms": 300000,
+        "seq_reserve_size": 65536,
+        "seq_state_file": "./xdp_seq.state"
+    },
+    "traffic_policy": {
+        "default_action": "bypass",
+        "rules": [
+            {
+                "family": "ipv4",
+                "protocol": "tcp",
+                "src_prefix": "0.0.0.0/0",
+                "dst_prefix": "0.0.0.0/0",
+                "src_ports": [0, 65535],
+                "dst_ports": [0, 65535],
+                "suite_id": 1,
+                "identifier": 21328,
+                "action": "protect"
+            },
+            {
+                "family": "ipv4",
+                "protocol": "udp",
+                "src_prefix": "0.0.0.0/0",
+                "dst_prefix": "0.0.0.0/0",
+                "src_ports": [0, 65535],
+                "dst_ports": [0, 65535],
+                "suite_id": 1,
+                "identifier": 21328,
+                "action": "protect"
+            },
+            {
+                "family": "ipv6",
+                "protocol": "tcp",
+                "src_prefix": "::/0",
+                "dst_prefix": "::/0",
+                "src_ports": [0, 65535],
+                "dst_ports": [0, 65535],
+                "suite_id": 1,
+                "identifier": 21328,
+                "action": "protect"
+            },
+            {
+                "family": "ipv6",
+                "protocol": "udp",
+                "src_prefix": "::/0",
+                "dst_prefix": "::/0",
+                "src_ports": [0, 65535],
+                "dst_ports": [0, 65535],
+                "suite_id": 1,
+                "identifier": 21328,
+                "action": "protect"
+            }
+        ]
+    },
+    "data_plane": {
+        "zero_copy": true
+    },
+    "debug": {
+        "socket_debug": false,
+        "heartbeat_debug": false
+    }
+}
